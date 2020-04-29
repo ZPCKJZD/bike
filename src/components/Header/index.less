@@ -1,0 +1,42 @@
+.header{
+    background:#fff;
+    .header-top{
+        height:50px;
+        line-height: 50px;
+        text-align: right;
+        border-bottom:2px solid #ff0;
+        span{
+            margin-right:10px;
+        }
+        a{
+            margin:0 30px 0 10px;
+           color:#f00;
+        }
+    }
+    .header-breadcrumb{
+        text-align: right;
+        height:40px;
+        line-height: 40px;
+        .name{
+            span{
+                position: relative;
+                &:after{
+                    position:absolute;
+                    top:30px;
+                    left:4px;
+                    content:"";
+                   border-top:10px solid #fff;
+                   border-left:10px solid transparent;
+                   border-right: 10px solid transparent;
+                 }
+            }
+        }
+        .weather{
+            img{
+                width: 30px;
+                margin: 0 10px 0 10px
+                ;
+            }
+        }
+    }
+}

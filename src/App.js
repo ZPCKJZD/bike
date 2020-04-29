@@ -1,9 +1,8 @@
 import React from 'react';
-import { Button } from 'antd';
-const App = () => {
+const App = (props) => {
   return ( 
     <div>
-      <Button type="primary">按钮</Button>
+      {props.children}
     </div>
    );
 }
