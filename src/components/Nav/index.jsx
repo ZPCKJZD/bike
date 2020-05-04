@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './index.less'
 import {Menu} from 'antd'
 import MenuConfig from './../../config/menuConfig'
+import {NavLink} from 'react-router-dom'
 const {SubMenu}=Menu
 export default class Nav extends Component {
     state={
@@ -15,7 +16,7 @@ export default class Nav extends Component {
           if(item.children){
             return <SubMenu title={item.title} key={item.key}>{this.MenuItem(item.children)}</SubMenu>
             }
-           return <Menu.Item key={item.key}>{item.title}</Menu.Item>
+           return <Menu.Item key={item.key}><NavLink to={"/admin"+item.key}>{item.title}</NavLink></Menu.Item>
         })
     }
     render() {
