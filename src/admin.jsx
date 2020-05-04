@@ -8,6 +8,9 @@ export default class Admin extends Component {
     render() {
         return (
             <div>
+                <div className="ajaxLoad">
+                      isLoading....
+                </div>
                 <Row>
                     <Col className="nav" span={4}>
                         <Nav/>
