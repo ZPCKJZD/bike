@@ -8,6 +8,9 @@ import Bar from './pages/echarts/Bar'
 import Pie from './pages/echarts/Bie'
 import Base from './pages/table/base'
 import City from './pages/city'
+import Order from './pages/order'
+import Common from './common'
+import Details from './pages/details'
 const Routes = () => {
     return ( 
        <Router>
@@ -19,9 +22,17 @@ const Routes = () => {
                        <Route path='/admin/charts/bar' component={Bar}/>
                        <Route path='/admin/charts/pie' component={Pie}/>
                        <Route path='/admin/table/basic' component={Base}/>  
-                       <Route path='/admin/city' component={City}/>                                                        
+                       <Route path='/admin/city' component={City}/>      
+                       <Route path='/admin/order' component={Order}/>                                                       
                    </Admin>
-               }}/>    
+               }}/> 
+               <Route path='/common' render={()=>{
+                   return <Common>
+                           <Route path='/common/order/details' component={Details}/>
+                           
+                         </Common>
+               }}/>
+                  
            </App>
        </Router>
     );
