@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Card,Form,Table,Select,Button,Modal,Radio, message} from 'antd'
-import Axios from './../../axios/index'
+import Utils from './../../utils/index'
 const Option=Select.Option
 const FormItem=Form.Item
 export default class City extends Component {
@@ -9,16 +9,7 @@ export default class City extends Component {
         open:false
     }
     componentDidMount(){
-        this.getData()
-    }
-    getData=()=>{
-        Axios.axios({method:"get",url:"/city"})
-        .then(res=>{
-        res.results.data.map(item=>item.key=item.city_id)
-           this.setState({
-               dataSource:res.results.data
-           })
-        })
+        Utils.getData(this,"/city","get")
     }
     handleCity=()=>{
       this.setState({

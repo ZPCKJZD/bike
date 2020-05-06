@@ -11,6 +11,7 @@ import City from './pages/city'
 import Order from './pages/order'
 import Common from './common'
 import Details from './pages/details'
+import User from './pages/user'
 const Routes = () => {
     return ( 
        <Router>
@@ -23,7 +24,8 @@ const Routes = () => {
                        <Route path='/admin/charts/pie' component={Pie}/>
                        <Route path='/admin/table/basic' component={Base}/>  
                        <Route path='/admin/city' component={City}/>      
-                       <Route path='/admin/order' component={Order}/>                                                       
+                       <Route path='/admin/order' component={Order}/>
+                       <Route path='/admin/user' component={User}/>                                                             
                    </Admin>
                }}/> 
                <Route path='/common' render={()=>{

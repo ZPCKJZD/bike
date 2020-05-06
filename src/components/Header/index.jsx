@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Row,Col} from 'antd'
 import './index.less'
-import showTime from './../../utils/index'
+import Utils from './../../utils/index'
 import Axios from './../../axios/index'
 export default class Header extends Component {
     state={
@@ -15,7 +15,7 @@ export default class Header extends Component {
         this.getWeather()  
     }
     Time=()=>{
-        this.setState({Time:showTime()})
+        this.setState({Time:Utils.showTime()})
     }
     getWeather=()=>{
         let city="石家庄"

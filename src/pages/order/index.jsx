@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import {Card,Form,Table,Select,Button,Modal,Radio, message,DatePicker} from 'antd'
 import Axios from './../../axios/index'
-const Option=Select.Option
+import FilterForm from './../../components/baseForm/index'
+import Utils from './../../utils/index'
+import BaseTable from './../../components/baseTable/index'
 const FormItem=Form.Item
 export default class Order extends Component {
     state={
@@ -10,19 +12,9 @@ export default class Order extends Component {
         order_details:[]
     }
     componentDidMount(){
-        this.getData()
-    }
-    getData=()=>{
-        Axios.axios({url:"/order",isLoad:true,method:"get"})
-        .then(res=>{
-            res.results.data.map(item=>item.key=item.order_sn)
-            this.setState({
-                dataSource:res.results.data
-            })
-        })
+        Utils.getData(this,"/order","get")
     }
     closeOrder=()=>{
-   
       this.setState({order_status:true})
       Axios.axios({method:'get',url:"/order_details"}).then(res=>{
           this.setState({order_details:res.results.data[0]})
@@ -40,6 +32,12 @@ export default class Order extends Component {
         }else{
             window.open("/#/common/order/details?id="+item[0].order_sn,"_blank")
         }
+    }
+    getTableData=(a,b)=>{
+       this.setState({
+           selectedRowKays:a,
+           selectedRows:b
+       })
     }
     render() {
         const columns=[
@@ -91,17 +89,6 @@ export default class Order extends Component {
                 dataIndex: 'user_pay'
             }
         ]
-        const selectedRowKeys=this.state.selectedRowKeys
-        const rowSelection={
-            type:'radio',
-            selectedRowKeys,
-            onChange:(selectedRowKeys,selectedRows)=>{
-                this.setState({
-                    selectedRowKeys,
-                    selectedRows
-                })
-            }
-        }
         const lays={
             labelCol:{
                 span:4
@@ -110,16 +97,18 @@ export default class Order extends Component {
                 span:12
             }
         }
+       const initialTable={
+           columns,
+           type:"radio",
+           pagination:5,
+           dataSource:this.state.dataSource 
+       }
         return (
             <div>
                    <OrderForm/>
                    <Card>
                        <Button type="primary" style={{margin:"0 20px 10px 0"}} onClick={this.orderDetails}>订单详情</Button><Button type="primary" onClick={this.closeOrder}>结束订单</Button>
-                       <Table columns={columns} bordered 
-                       dataSource={this.state.dataSource}
-                       pagination={{pageSize:5}}
-                       rowSelection={rowSelection}
-                       />
+                       <BaseTable initialTable={initialTable} getTableData={this.getTableData}/>
                        <Modal 
                        title="结束订单"
                        visible={this.state.order_status}
@@ -154,50 +143,40 @@ export default class Order extends Component {
     }
 }
 class OrderForm extends Component{
+    formList = [
+        {
+            type:'SELECT',
+            label:'城市',
+            field:'city',
+            placeholder:'全部',
+            initialValue:'1',
+            width:80,
+            list: [{ id: '0', name: '全部' }, { id: '1', name: '北京' }, { id: '2', name: '天津' }, { id: '3', name: '上海' }]
+        },
+        {
+            type: '时间查询'
+        },
+        {
+            type: 'SELECT',
+            label: '订单状态',
+            field:'order_status',
+            placeholder: '全部',
+            initialValue: '1',
+            width: 80,
+            list: [{ id: '0', name: '全部' }, { id: '1', name: '进行中' }, { id: '2', name: '结束行程' }]
+        }
+    ]
+    filterSubmit=(data)=>{
+
+    }
     render(){
-        const {getFieldDecorator}=this.props.form;
+
+        
+
         return(
             <div>
                <Card>
-                  <Form layout="inline">
-                     <FormItem label="城市">
-                         {
-                             getFieldDecorator('order_city')(
-                             <Select placeholder="请选择" style={{width:100}}>
-                                <Option value="1">北京</Option>
-                                <Option value="2">杭州</Option>
-                            </Select>
-                             )
-                         }
-                     </FormItem>
-                     <FormItem  style={{marginLeft:5}}>
-                         {
-                             getFieldDecorator('open_time')(
-                             <DatePicker  placeholder="开始时间"/>                   
-                             )
-                         }
-                     </FormItem>
-                    <span style={{marginRight:5}}>~ </span>
-                     <FormItem  style={{marginLeft:5}} >
-                         {
-                             getFieldDecorator('close_time')(
-                             <DatePicker placeholder="结束时间"/>                   
-                             )
-                         }
-                     </FormItem>
-                     <FormItem label="订单状态">
-                         {
-                             getFieldDecorator('user_status')(
-                             <Select placeholder="请选择" style={{width:100}}>
-                                <Option value="1">进行中</Option>
-                                <Option value="2">已停止</Option>
-                            </Select>
-                             )
-                         }
-                     </FormItem>
-                     <Button  type="primary" style={{margin:"0 20px 0 20px"}}>查询</Button>
-                     <Button>重置</Button>
-                  </Form>
+                    <FilterForm formList={this.formList} filterSubmit={this.filterSubmit}/>
                </Card>
             </div>
         )

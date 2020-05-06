@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Table,Card, Modal,Button, message,Badge} from 'antd'
 import Axios from './../../axios/index'
+import BaseTable from './../../components/baseTable'
 export default class Base extends Component {
     state={
         dataSource:[]
@@ -46,6 +47,12 @@ export default class Base extends Component {
             }
         })
     }
+  getTableData=(a,b)=>{  
+    this.setState({
+        selectedRowKeys:a,
+        selectedRows:b
+    })  
+  }
     render() {
         const columns=[
             {
@@ -135,46 +142,28 @@ export default class Base extends Component {
                 }
             }
         ]
-        const rowSelection={
-             type:"radio",
-             onChange:(selectedRowKeys,selectedRows)=>{
-               this.setState({
-                   selectedRowKeys,
-                   radioItem:selectedRows
-               })          
-       }
-        }
-        const selectedRowKeys=this.state.selectedRowKeys
-        const rowCheckSelect={
-            type:'checkbox',
-            selectedRowKeys,
-            onChange:(selectedRowKeys,selectedRows)=>{     
-                this.setState({
-                   selectedRowKeys,
-                    selectedRows
-                })    
+        const initialTable={
+                columns:columns2,
+                pagination:5,
+                dataSource:this.state.dataSource,
+                type:"radio"
             }
-        }
+         const initialTable2={
+                columns:columns,
+                pagination:5,
+                dataSource:this.state.dataSource,
+                type:"check"
+            }
         return (
             <div>
-               <Card title="基础表格">
-                   <Table columns={columns2}
-                    bordered dataSource={this.state.dataSource} 
-                    pagination={{pageSize:5}}
-                    rowSelection={rowSelection}
-                    >
-
-                   </Table>
+                <Card>
+                  <BaseTable initialTable={initialTable}/>
                </Card>
                <Card title="复选框表格">
                    <Button type="danger" onClick={this.deleteCheck}>删除数据</Button>
-                   <Table columns={columns}
-                    bordered dataSource={this.state.dataSource} 
-                    pagination={{pageSize:5}}
-                    rowSelection={rowCheckSelect}
-                    >
+                   <BaseTable  initialTable={initialTable2} getTableData={this.getTableData}>
 
-                   </Table>
+                   </BaseTable>
                </Card>
             </div>
         )
